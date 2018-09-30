@@ -4,6 +4,7 @@ var config = require("./config.js");
 
 var openweathermap_api_key = config.OPENWEATHERMAP_API_KEY;
 var slack_token = config.SLACK_TOKEN;
+var botID = '';
 
 const bot = new SlackBot({
   token: slack_token,
@@ -15,17 +16,21 @@ bot.on('start', () => {
   bot.postMessageToChannel('general', 
   'Type in the city to find out the weather',
   );
+  botID = bot.self.id;
 });
 
 // Error Handler
 bot.on('error', (err) => console.log(err));
 
 // Message Handler
-bot.on('message', (data) => {
+bot.on('message', data => {
   if(data.type != 'message'){
     return;
   }
   if(data.subtype == 'bot_message'){
+    return;
+  }
+  if(!data.text.includes(botID)){
     return;
   }
   var str = data.text;
@@ -45,7 +50,6 @@ function handleMessage(message){
     }
   })
   .then((responseJson) => {
-    // console.log(responseJson);
     bot.postMessageToChannel(
       'general',
       'Here are the weather conditions in ' + message  + ':\n' +
