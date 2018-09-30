@@ -51,7 +51,7 @@ function handleMessage(message){
       'Here are the weather conditions in ' + message  + ':\n' +
       'The current condition is: ' + responseJson.weather[0].description + '\n' +
       'The current temperature is: ' + responseJson.main.temp + '°F\n' +
-      'The current pressure is: ' + responseJson.main.pressure + 'hPa\n' +
+      'The current pressure is: ' + responseJson.main.pressure + ' hPa\n' +
       'The current humidity is: ' + responseJson.main.humidity + '%\n' +
       'The minimum temperature today is: ' + responseJson.main.temp_min + '°F\n' +
       'The maximum temperature today is: ' + responseJson.main.temp_max + '°F'
