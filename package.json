@@ -1,0 +1,25 @@
+{
+  "name": "slack-weather-bot",
+  "version": "1.0.0",
+  "description": "A simple Slack Bot that reports on the current weather for a given city",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yehray/Slack-Weather-Bot.git"
+  },
+  "author": "Raymond Yeh",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/yehray/Slack-Weather-Bot/issues"
+  },
+  "homepage": "https://github.com/yehray/Slack-Weather-Bot#readme",
+  "dependencies": {
+    "es6-promise": "^4.2.5",
+    "isomorphic-fetch": "^2.2.1",
+    "slackbots": "^1.1.0"
+  }
+}
