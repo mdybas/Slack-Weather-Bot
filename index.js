@@ -1,3 +1,8 @@
+/*
+Weather Bot
+A simple Slack Bot that reports on the current weather for a given city
+*/
+
 const SlackBot = require('slackbots');
 const fetch = require('isomorphic-fetch');
 var config = require("./config.js");
@@ -22,7 +27,10 @@ const bot = new SlackBot({
   name: 'weatherbot'
 });
 
-// Start Handler. Bot posts instructions on how to call the bot to the general channel.
+/*
+Handles when the bot is first started.
+Bot posts instructions on how to call the bot to the general channel.
+*/
 bot.on('start', () => {
   bot.postMessage('general', 
   'Type \'@Weather Bot\' and the name of the city to find the current weather conditions at the city entered.',
@@ -33,8 +41,10 @@ bot.on('start', () => {
 // Error Handler
 bot.on('error', (err) => console.log(err));
 
-// Message Handler. Bot only responds if the message is sent from the user and if the user
-// types in '@Weather Bot'.
+/* 
+Handles incoming message.
+Bot only responds if the message is sent from the user and if the user types in '@Weather Bot'.
+ */
 bot.on('message', data => {
   if(data.type != 'message'){
     return;
@@ -54,9 +64,11 @@ bot.on('message', data => {
   handleMessage(str.replace(/\s*\<.*?\>\s*/g, ''), channel);
 });
 
-// Request to openweathermap.org to get data on current condition,
-// temperature, pressure, humidty, maximum temperature and minimum temperature. 
-// Posts information to the slack channel the message was sent from.
+/*
+Request to openweathermap.org to get data on current condition,
+temperature, pressure, humidty, maximum temperature and minimum temperature. 
+Posts information to the slack channel the message was sent from.
+*/
 function handleMessage(message, channel){
   var url = 'https://api.openweathermap.org/data/2.5/weather?q=' + message + '&appid=' + openweathermap_api_key + '&units=imperial';
   fetch(url).then((response) => {
@@ -88,7 +100,10 @@ function handleMessage(message, channel){
   });
 } 
 
-//Help function
+/*
+Help function. Displays instructions on how to use Weather Bot to the channel the
+request came from.channel
+*/
 function runHelp(channel){
   bot.postMessage(
     channel,
