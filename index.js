@@ -14,7 +14,7 @@ var http = require("http");
 setInterval(function() {
     http.get("http://stormy-crag-2nom2612.herokuapp.com/");
     console.log("ss");
-}, 3000);
+}, 300000);
 
 
 // Get api key and token from config file.
