@@ -5,7 +5,13 @@ var config = require("./config.js");
 var openweathermap_api_key = config.OPENWEATHERMAP_API_KEY;
 var slack_token = config.SLACK_TOKEN;
 var botID = '';
-var port = process.env.PORT || 5000;
+
+const express = require('express');
+const bodyParser = require('body-parser')
+const path = require('path');
+const app = express();
+app.use(express.static(__dirname + '/dist/'));
+app.listen(process.env.PORT || 8080);
 
 const bot = new SlackBot({
   token: slack_token,
