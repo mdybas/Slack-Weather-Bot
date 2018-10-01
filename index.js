@@ -5,6 +5,7 @@ var config = require("./config.js");
 var openweathermap_api_key = config.OPENWEATHERMAP_API_KEY;
 var slack_token = config.SLACK_TOKEN;
 var botID = '';
+var port = process.env.PORT || 5000;
 
 const bot = new SlackBot({
   token: slack_token,
@@ -22,7 +23,7 @@ bot.on('start', () => {
 // Error Handler
 bot.on('error', (err) => console.log(err));
 
-// Message Handler
+// Message Handler. Bot only responds if the message is sent from the user 
 bot.on('message', data => {
   if(data.type != 'message'){
     return;
@@ -35,14 +36,16 @@ bot.on('message', data => {
   }
   var str = data.text;
   var channel = data.channel;
-  console.log(data);
+  if(data.text.includes(' help')){
+    runHelp(channel);
+    return;
+  }
   handleMessage(str.replace(/\s*\<.*?\>\s*/g, ''), channel);
 });
 
 // Responds to Data
 function handleMessage(message, channel){
-  var url = "https://api.openweathermap.org/data/2.5/weather?q=" + message + "&appid=" + openweathermap_api_key + "&units=imperial";
-  console.log(url);
+  var url = 'https://api.openweathermap.org/data/2.5/weather?q=' + message + '&appid=' + openweathermap_api_key + '&units=imperial';
   fetch(url).then((response) => {
     if (response.ok) {
       return response.json();
@@ -71,6 +74,14 @@ function handleMessage(message, channel){
     );
   });
 } 
+
+//Help function
+function runHelp(channel){
+  bot.postMessage(
+    channel,
+    'Type \'@Weather Bot\' and the name of the city to find the current weather conditions at the city entered'
+  );
+}
 
 
 
