@@ -1,27 +1,37 @@
 const SlackBot = require('slackbots');
 const fetch = require('isomorphic-fetch');
 var config = require("./config.js");
-
-var openweathermap_api_key = config.OPENWEATHERMAP_API_KEY;
-var slack_token = config.SLACK_TOKEN;
-var botID = '';
-
 const express = require('express');
 const bodyParser = require('body-parser')
 const path = require('path');
+
+// Start app
 const app = express();
 app.use(express.static(__dirname + '/dist/'));
 app.listen(process.env.PORT || 8080);
 
+// Get api key and token from config file.
+var openweathermap_api_key = config.OPENWEATHERMAP_API_KEY;
+var slack_token = config.SLACK_TOKEN;
+var botID = '';
+
+var reqTimer = setTimeout(function wakeUp() {
+  request("https://stormy-crag-22612.herokuapp.com", function() {
+     console.log("WAKE UP DYNO");
+  });
+  return reqTimer = setTimeout(wakeUp, 120);
+}, 120);
+
+//Creates a new Slackbot
 const bot = new SlackBot({
   token: slack_token,
   name: 'weatherbot'
 });
 
-// Start Handler
+// Start Handler. Bot posts instructions on how to call the bot on the general channel.
 bot.on('start', () => {
   bot.postMessage('general', 
-  'Type in the city to find out the weather',
+  'Type \'@Weather Bot\' and the name of the city to find the current weather conditions at the city entered.',
   );
   botID = bot.self.id;
 });
@@ -29,7 +39,8 @@ bot.on('start', () => {
 // Error Handler
 bot.on('error', (err) => console.log(err));
 
-// Message Handler. Bot only responds if the message is sent from the user 
+// Message Handler. Bot only responds if the message is sent from the user and if the user
+// types in '@Weather Bot'.
 bot.on('message', data => {
   if(data.type != 'message'){
     return;
@@ -49,7 +60,9 @@ bot.on('message', data => {
   handleMessage(str.replace(/\s*\<.*?\>\s*/g, ''), channel);
 });
 
-// Responds to Data
+// Request to openweathermap.org to get data on current condition,
+// temperature, pressure, humidty, maximum temperature and minimum temperature. 
+// Posts information to the slack channel the message was sent from.
 function handleMessage(message, channel){
   var url = 'https://api.openweathermap.org/data/2.5/weather?q=' + message + '&appid=' + openweathermap_api_key + '&units=imperial';
   fetch(url).then((response) => {
@@ -85,7 +98,7 @@ function handleMessage(message, channel){
 function runHelp(channel){
   bot.postMessage(
     channel,
-    'Type \'@Weather Bot\' and the name of the city to find the current weather conditions at the city entered'
+    'Type \'@Weather Bot\' and the name of the city to find the current weather conditions at the city entered.'
   );
 }
 
