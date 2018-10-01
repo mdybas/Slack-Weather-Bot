@@ -11,17 +11,23 @@ const bodyParser = require('body-parser')
 const path = require('path');
 var http = require("http");
 
-// Start app
+/*
+Start app
+*/
 const app = express();
 app.use(express.static(__dirname + '/dist/'));
 app.listen(process.env.PORT || 8080);
 
-// Get api key and token from config file.
+/* 
+Get api key and token from config file.
+*/
 var openweathermap_api_key = config.OPENWEATHERMAP_API_KEY;
 var slack_token = config.SLACK_TOKEN;
 var botID = '';
 
-//Creates a new Slackbot
+/*
+Creates a new Slackbot
+*/
 const bot = new SlackBot({
   token: slack_token,
   name: 'weatherbot'
@@ -38,7 +44,9 @@ bot.on('start', () => {
   botID = bot.self.id;
 });
 
-// Error Handler
+/*
+Error Handler
+*/
 bot.on('error', (err) => console.log(err));
 
 /* 
