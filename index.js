@@ -4,18 +4,12 @@ var config = require("./config.js");
 const express = require('express');
 const bodyParser = require('body-parser')
 const path = require('path');
+var http = require("http");
 
 // Start app
 const app = express();
 app.use(express.static(__dirname + '/dist/'));
 app.listen(process.env.PORT || 8080);
-
-var http = require("http");
-setInterval(function() {
-    http.get("http://stormy-crag-2nom2612.herokuapp.com/");
-    console.log("wake up");
-}, 300000);
-
 
 // Get api key and token from config file.
 var openweathermap_api_key = config.OPENWEATHERMAP_API_KEY;
@@ -28,7 +22,7 @@ const bot = new SlackBot({
   name: 'weatherbot'
 });
 
-// Start Handler. Bot posts instructions on how to call the bot on the general channel.
+// Start Handler. Bot posts instructions on how to call the bot to the general channel.
 bot.on('start', () => {
   bot.postMessage('general', 
   'Type \'@Weather Bot\' and the name of the city to find the current weather conditions at the city entered.',
