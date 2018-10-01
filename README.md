@@ -1,6 +1,6 @@
 # Slack-Weather-Bot
 
-##Author
+## Author
 Raymond Yeh
 
 ## About
