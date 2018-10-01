@@ -13,7 +13,7 @@ app.listen(process.env.PORT || 8080);
 var http = require("http");
 setInterval(function() {
     http.get("http://stormy-crag-2nom2612.herokuapp.com/");
-    console.log("ss");
+    console.log("wake up");
 }, 300000);
 
 
