@@ -15,12 +15,12 @@ var openweathermap_api_key = config.OPENWEATHERMAP_API_KEY;
 var slack_token = config.SLACK_TOKEN;
 var botID = '';
 
-var reqTimer = setTimeout(function wakeUp() {
-  request("https://stormy-crag-22612.herokuapp.com", function() {
-     console.log("WAKE UP DYNO");
-  });
-  return reqTimer = setTimeout(wakeUp, 120);
-}, 120);
+// var reqTimer = setTimeout(function wakeUp() {
+//   request("https://stormy-crag-22612.herokuapp.com", function() {
+//      console.log("WAKE UP DYNO");
+//   });
+//   return reqTimer = setTimeout(wakeUp, 120);
+// }, 120);
 
 //Creates a new Slackbot
 const bot = new SlackBot({
